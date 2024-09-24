@@ -189,7 +189,6 @@ def main(args):
         ############################################################
         target_response_list = target_llm.get_response(adv_prompt_list)
         print("Finished getting target responses.") 
-
         # Get judge-scores (i.e., likelihood of jailbreak) from Evaluator
         judge_scores = evaluator_llm.judge_score(adv_prompt_list, target_response_list)
         print("Finished getting judge scores from evaluator.")
