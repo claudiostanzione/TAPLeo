@@ -70,7 +70,7 @@ class AttackLLM():
             Returns:
             - List of generated outputs (dictionaries) or None for failed generations.
         """
-        
+
         assert len(convs_list) == len(prompts_list), "Mismatch between number of conversations and prompts."
         
         batchsize = len(convs_list)
@@ -93,7 +93,8 @@ class AttackLLM():
                 full_prompts.append(conv.to_openai_api_messages())
             else:
                 conv.append_message(conv.roles[1], init_message)
-                full_prompts.append(conv.get_prompt())#[:-len(conv.sep2)])
+                full_prompts.append(conv.get_prompt())#[:-len(conv.sep2)]
+            
             
         for _ in range(self.max_n_attack_attempts):
             # Subset conversations based on indices to regenerate
@@ -126,17 +127,20 @@ class AttackLLM():
                 
                 if "gpt" not in self.model_name:
                     full_output = init_message + full_output
-
+                     
+                print("full_output", full_output)
                 attack_dict, json_str = common.extract_json(full_output)
-                
+                print("attack_dict", attack_dict)
+                print("json_str", json_str)
                 if attack_dict is not None:
                     valid_outputs[orig_index] = attack_dict
                     # Update the conversation with valid generation
                     convs_list[orig_index].update_last_message(json_str) 
-                        
+                    
                 else:
                     new_indices_to_regenerate.append(orig_index)
-            
+
+
             # Update indices to regenerate for the next iteration
             indices_to_regenerate = new_indices_to_regenerate 
             
@@ -144,8 +148,10 @@ class AttackLLM():
             if not indices_to_regenerate:
                 break
         
+    
         if any([output for output in valid_outputs if output is None]):
             print(f"Failed to generate output after {self.max_n_attack_attempts} attempts. Terminating.")
+        print("valid_outputs", valid_outputs)     
         return valid_outputs
 
 class TargetLLM():

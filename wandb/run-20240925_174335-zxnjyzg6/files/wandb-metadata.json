@@ -1,0 +1,49 @@
+{
+    "os": "macOS-14.6.1-arm64-arm-64bit",
+    "python": "3.11.1",
+    "heartbeatAt": "2024-09-25T15:43:37.307521",
+    "startedAt": "2024-09-25T15:43:35.388507",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/claudiostanzione/Documents/MYGIT/TAPLeo/main_TAP.py",
+    "codePathLocal": "main_TAP.py",
+    "codePath": "main_TAP.py",
+    "git": {
+        "remote": "https://github.com/claudiostanzione/TAPLeo.git",
+        "commit": "ab8874f5922a9a568cb1f4ca9fe8bd155449ba1c"
+    },
+    "email": "claudio.stanzione@outlook.it",
+    "root": "/Users/claudiostanzione/Documents/MYGIT/TAPLeo",
+    "host": "MacBook-Air-di-CLAUDIO-2.local",
+    "username": "claudiostanzione",
+    "executable": "/Users/claudiostanzione/Documents/MYGIT/TAPLeo/.venv/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 3204,
+        "min": 600,
+        "max": 3204
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3204,
+            "min": 600,
+            "max": 3204
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 228.27386474609375,
+            "used": 9.56063461303711
+        }
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 8.0
+    }
+}

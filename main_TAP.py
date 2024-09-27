@@ -6,19 +6,23 @@ from loggers import WandBLogger
 from evaluators import load_evaluator
 from conversers import load_attack_and_target_models
 from common import process_target_response, get_init_msg, conv_template, random_string
+import json
 
 import common
-
 
 def clean_attacks_and_convs(attack_list, convs_list):
     """
         Remove any failed attacks (which appear as None) and corresponding conversations
     """
-    tmp = [(a, c) for (a, c) in zip(attack_list, convs_list) if a is not None]
-    tmp = [*zip(*tmp)]
-    attack_list, convs_list = list(tmp[0]), list(tmp[1])
-
-    return attack_list, convs_list
+    try:
+        tmp = [(a, c) for (a, c) in zip(attack_list, convs_list) if a is not None]
+        tmp = [*zip(*tmp)]
+        attack_list, convs_list = list(tmp[0]), list(tmp[1])
+    
+        return attack_list, convs_list
+    
+    except:
+        return None, None
 
 def prune(on_topic_scores=None,
             judge_scores=None,
@@ -152,16 +156,20 @@ def main(args):
         convs_list = copy.deepcopy(convs_list_new)
         extracted_attack_list, convs_list = clean_attacks_and_convs(extracted_attack_list, convs_list)
         
-        
+        print("extracted_attack_list",extracted_attack_list)
+        #gestisci qui, extracted_attack_list
         adv_prompt_list = [attack["prompt"] for attack in extracted_attack_list]
         improv_list = [attack["improvement"] for attack in extracted_attack_list]
         
+        print("adv_prompt_list", adv_prompt_list)
+        print("improvement", improv_list) 
         ############################################################
         #   PRUNE: PHASE 1 
         ############################################################
         # Get on-topic-scores (does the adv_prompt asks for same info as original prompt)
+        print("original_prompt",original_prompt)
         on_topic_scores = evaluator_llm.on_topic_score(adv_prompt_list, original_prompt)
-
+        print("on_topic_scores", on_topic_scores)
         # Prune attacks which are irrelevant
         (on_topic_scores,
         _,
@@ -194,7 +202,7 @@ def main(args):
         judge_scores = evaluator_llm.judge_score(adv_prompt_list, target_response_list)
         print("Finished getting judge scores from evaluator.")
 
-    
+        '''
         print("=========================")
         print("on_topic_scores", on_topic_scores)
         print("=========================")
@@ -210,6 +218,7 @@ def main(args):
         print("=========================")
         print("extracted_attack_list", extracted_attack_list)
         print("=========================")
+        '''
         ############################################################
         #   PRUNE: PHASE 2 
         ############################################################
@@ -240,7 +249,7 @@ def main(args):
                 on_topic_scores,
                 conv_ids=[c.self_id for c in convs_list],
                 parent_conv_ids=[c.parent_id for c in convs_list])
-                '''
+        '''       
 
         # Truncate conversation to avoid context length issues
         for conv in convs_list:
@@ -385,19 +394,19 @@ if __name__ == '__main__':
     parser.add_argument(
         "--branching-factor",
         type = int,
-        default = 1,
+        default = 2,
         help = "Branching factor"
     )
     parser.add_argument(
         "--width",
         type = int,
-        default = 10,
+        default = 5,
         help = "Width"
     ) 
     parser.add_argument(
         "--depth",
         type = int,
-        default = 10,
+        default = 5,
         help = "Depth"
     )
 
