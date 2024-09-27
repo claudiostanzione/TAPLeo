@@ -84,7 +84,6 @@ class HuggingFace(LanguageModel):
             9092,
             16675])
 
-
 class APIModel(LanguageModel): 
 
     API_HOST_LINK = "ADD_LINK"

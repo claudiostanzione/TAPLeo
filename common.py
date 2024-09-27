@@ -33,17 +33,11 @@ def extract_json(s):
         return None, None
 
     json_str = s[start_pos:end_pos]
-    print("start_pos", start_pos)
-    print("end_pos", end_pos)
-    
-    print("json_str",json_str)
 
     json_str = json_str.replace("\n", "")  # Remove all line breaks
     #json_str='"""'+json_str+'"""'
     try:
         parsed = ast.literal_eval(json_str)
-        print("parsed ", parsed)
-        print("qui si")
         
         if not all(x in parsed for x in ["improvement","prompt"]):
             return None, None

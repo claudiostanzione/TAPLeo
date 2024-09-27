@@ -202,23 +202,6 @@ def main(args):
         judge_scores = evaluator_llm.judge_score(adv_prompt_list, target_response_list)
         print("Finished getting judge scores from evaluator.")
 
-        '''
-        print("=========================")
-        print("on_topic_scores", on_topic_scores)
-        print("=========================")
-        print("judge_scores", judge_scores)
-        print("=========================")
-        print("adv_prompt_list", adv_prompt_list)
-        print("=========================")
-        print("improv_list", improv_list)
-        print("=========================")
-        print("convs_list", convs_list)
-        print("=========================")
-        print("target_response_list", target_response_list)
-        print("=========================")
-        print("extracted_attack_list", extracted_attack_list)
-        print("=========================")
-        '''
         ############################################################
         #   PRUNE: PHASE 2 
         ############################################################
